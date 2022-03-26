@@ -1,4 +1,4 @@
-package com.proxyy.jacksonextplugin;
+package com.proxyy.jackson.ext.plugin;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.proxyy.jacksonextplugin;
+package com.proxyy.jackson.ext.plugin;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
