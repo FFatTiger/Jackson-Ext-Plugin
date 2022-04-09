@@ -19,15 +19,15 @@ import java.math.BigDecimal;
  * @date 2022/3/20
  */
 @SuppressWarnings("rawtypes")
-public class CustomFormatSerializerProcessor extends BaseAbstractJacksonSerializer {
+public class DateFormatSerializerProcessor extends BaseAbstractJacksonSerializer {
     private boolean toNumber;
 
     CustomFormatSerializer<Object> customFormatSerializer;
-    public CustomFormatSerializerProcessor() {
+    public DateFormatSerializerProcessor() {
         super();
     }
 
-    public CustomFormatSerializerProcessor(JacksonSerializerFilter jacksonSerializerFilter, boolean toNumber) {
+    public DateFormatSerializerProcessor(JacksonSerializerFilter jacksonSerializerFilter, boolean toNumber) {
         super(jacksonSerializerFilter);
         this.toNumber = toNumber;
     }
@@ -59,7 +59,7 @@ public class CustomFormatSerializerProcessor extends BaseAbstractJacksonSerializ
 
             if (customFormat != null) {
                 try {
-                    return new CustomFormatSerializerProcessor(
+                    return new DateFormatSerializerProcessor(
                             customFormat.serializer().newInstance(),
                             customFormat.toNumber()
                     );

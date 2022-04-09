@@ -13,7 +13,7 @@ public interface CustomFormatSerializer<T> extends JacksonSerializerFilter {
      * 序列化基本类型实现
      *
      * @param originValue 原数据
-     * @return
+     * @return format后的对象
      */
     T serializeContent(T originValue);
 }

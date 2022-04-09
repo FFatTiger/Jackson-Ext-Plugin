@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -17,6 +19,7 @@ import java.util.Objects;
  * @date 2022/3/20
  */
 public abstract class BaseAbstractJacksonSerializer<T> extends JsonSerializer<T> implements ContextualSerializer {
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
     private JacksonSerializerFilter jacksonSerializerFilter;
 
@@ -27,13 +30,12 @@ public abstract class BaseAbstractJacksonSerializer<T> extends JsonSerializer<T>
     }
 
     protected BaseAbstractJacksonSerializer(JacksonSerializerFilter jacksonSerializerFilter) {
-        Objects.requireNonNull(jacksonSerializerFilter, "filter can not be null");
         this.jacksonSerializerFilter = jacksonSerializerFilter;
     }
 
     @Override
     public final void serialize(T value, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-        if (jacksonSerializerFilter.shouldSerialize(value)) {
+        if (jacksonSerializerFilter == null || jacksonSerializerFilter.shouldSerialize(value)) {
             serializeInternal(value, jsonGenerator, serializerProvider);
             return;
         }
@@ -43,14 +45,15 @@ public abstract class BaseAbstractJacksonSerializer<T> extends JsonSerializer<T>
         jacksonInternalSerializer.serialize(value,jsonGenerator, serializerProvider);
     }
 
-    public abstract void serializeInternal(T value, JsonGenerator gen, SerializerProvider serializerProvider);
+    public abstract void serializeInternal(T value, JsonGenerator gen, SerializerProvider serializerProvider) throws IOException;
 
     @Override
     public final void serializeWithType(T value, JsonGenerator gen, SerializerProvider serializerProvider, TypeSerializer typeSer) throws IOException {
-        if (jacksonSerializerFilter.shouldSerialize(gen.getCurrentValue())) {
+        if (jacksonSerializerFilter == null || jacksonSerializerFilter.shouldSerializeWithType(gen.getCurrentValue())) {
             serializeWithTypeInternal(value, gen, serializerProvider, typeSer);
             return;
         }
+
         JsonSerializer<Object> jacksonInternalSerializer = serializerProvider.findValueSerializer(value.getClass());
         Objects.requireNonNull(jacksonInternalSerializer, value.getClass().getSimpleName() + " has no corresponding serializer");
         jacksonInternalSerializer.serializeWithType(value, gen, serializerProvider, typeSer);
