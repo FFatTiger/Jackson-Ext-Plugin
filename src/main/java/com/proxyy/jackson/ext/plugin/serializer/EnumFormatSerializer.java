@@ -19,17 +19,17 @@ import java.io.IOException;
 public class EnumFormatSerializer extends BaseAbstractJacksonSerializer<Enum> {
     @Override
     public void serializeInternal(Enum value, JsonGenerator gen, SerializerProvider serializerProvider) throws IOException {
-        // TODO lihuan418: 2022/4/13  
+        // TODO proxyy: 2022/4/13  
     }
 
     @Override
     public void serializeWithTypeInternal(Enum value, JsonGenerator gen, SerializerProvider serializerProvider, TypeSerializer typeSer) throws IOException {
-        // TODO lihuan418: 2022/4/13  
+        // TODO proxyy: 2022/4/13  
     }
 
     @Override
     public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
-        // TODO lihuan418: 2022/4/13  
+        // TODO proxyy: 2022/4/13  
         return null;
     }
 }

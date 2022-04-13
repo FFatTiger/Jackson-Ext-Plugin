@@ -62,7 +62,7 @@ public class CustomFormatSerializer extends BaseAbstractJacksonSerializer {
             if (customFormat != null) {
                 try {
                     return new CustomFormatSerializer(
-                            // TODO lihuan418: 2022/4/11 考虑使用bean管理
+                            // TODO proxyy: 2022/4/11 考虑使用bean管理
                             customFormat.serializer().newInstance(),
                             customFormat.toNumber()
                     );
