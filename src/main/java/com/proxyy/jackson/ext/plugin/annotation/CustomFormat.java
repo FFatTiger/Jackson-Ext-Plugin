@@ -1,17 +1,16 @@
 package com.proxyy.jackson.ext.plugin.annotation;
 
 import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.proxyy.jackson.ext.plugin.serializer.CustomFormatSerializer;
-import com.proxyy.jackson.ext.plugin.serializer.CustomFormatSerializerProcessor;
+import com.proxyy.jackson.ext.plugin.serializer.CustomFormatter;
 
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * 自定义序列化，通过实现 {@link CustomFormatSerializer}，赋值至 {@link #serializer()}，以实现对属性值的自定义序列化
+ * 自定义序列化，通过实现 {@link CustomFormatter}，赋值至 {@link #serializer()}，以实现对属性值的自定义序列化
  *
  * @author proxyy
  * @date 2022/3/20
@@ -19,7 +18,7 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 @JacksonAnnotationsInside
 @Inherited
-@JsonSerialize(using = CustomFormatSerializerProcessor.class)
+@JsonSerialize(using = CustomFormatSerializer.class)
 //@JsonDeserialize(using = CustomFormatDeserializerProcessor.class)
 @SuppressWarnings("rawtypes")
 public @interface CustomFormat {
@@ -33,8 +32,9 @@ public @interface CustomFormat {
 
     /**
      * 自定义序列化类
+     *
      * @return 自定义序列化器class
      */
-    Class<? extends CustomFormatSerializer> serializer();
+    Class<? extends CustomFormatter> serializer();
 
 }

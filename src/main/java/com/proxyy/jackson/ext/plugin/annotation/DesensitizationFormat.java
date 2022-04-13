@@ -3,32 +3,33 @@ package com.proxyy.jackson.ext.plugin.annotation;
 import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.proxyy.jackson.ext.plugin.eunm.DesensitizationType;
 import com.proxyy.jackson.ext.plugin.eunm.SerializeType;
-import com.proxyy.jackson.ext.plugin.serializer.DateFormatSerializer;
+import com.proxyy.jackson.ext.plugin.serializer.DesensitizationFormatSerializer;
 
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * 日期序列化，将 {@link java.util.Date} 、 {@link java.time.LocalDate}或{@link java.time.LocalDateTime}转换为预期格式的日期字符串
- * 支持上述类型序列化为字符串，与将字符串序列化为Date
+ * 敏感信息脱敏序列化，将对应的敏感属性脱敏
+ *
  * @author proxyy
  * @date 2022/3/20
  */
 @Retention(RetentionPolicy.RUNTIME)
 @JacksonAnnotationsInside
 @Inherited
-@JsonSerialize(using = DateFormatSerializer.class)
+@JsonSerialize(using = DesensitizationFormatSerializer.class)
 @JsonDeserialize
-public @interface DateFormat {
+public @interface DesensitizationFormat {
 
     /**
-     * 预期的日期格式
+     * 需要脱敏的属性类型
      *
-     * @return 格式字符串
+     * @return 脱敏类型
      */
-    String pattern();
+    DesensitizationType desensitizationType();
 
 
     /**
