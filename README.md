@@ -82,4 +82,13 @@ public class PayRecordRequestDTO {
 }
 ```
 
-​	
+请求json
+
+```json
+{
+  "name": "fake_data",
+  "money": 33.16,
+  "payDate": "01-08"
+}
+```
+
