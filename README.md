@@ -38,7 +38,7 @@ SerializeType枚举项
 
 反序列化：将Date对象转换为json中的字符串格式，如下的payDate属性会被正确赋值为Date对象，值为'2016-01-08'
 
-请求json
+响应json
 
 ``` json
 {
