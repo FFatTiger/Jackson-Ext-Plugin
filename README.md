@@ -7,9 +7,13 @@
 该项目旨在将对象格式化从业务逻辑中解耦出来。主要是将[Jackson](https://github.com/FasterXML/jackson)
 开放的自定义序列化做整合封装简化，和实现一些常用的格式化注解，如将Date对象转换为指定的格式String，将敏感信息脱敏等。对于更复杂的格式化场景，封装了比起实现JsonSerializer更简单的接口。
 
+---
+
 ## 2.依赖前提
 
 + 项目使用了[SpringMvc](https://github.com/spring-projects/spring-framework)，且确保HttpMessageConverter为默认的Jackson实现
+
+---
 
 ## 3.使用
 
@@ -29,6 +33,8 @@ SerializeType枚举项
 |   ONLY_SER    | 是       | 否      | 否   |
 | ONLY_TYPE_SER | 否       | 是      | 否   |
 |      ALL      | 是       | 是      | 是   |
+
+---
 
 ### 3.1.2.DateFormat日期格式化
 
