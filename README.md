@@ -32,13 +32,54 @@ SerializeType枚举项
 
 ### 3.1.2.DateFormat日期格式化
 
-序列化：将Date对象转换为json中的字符串格式
-
-反序列化： 将String字符串
-
-|         | Desc | Example    |
-|---------|------|------------|
+|         | Desc     | Example    |
+| ------- | -------- | ---------- |
 | pattern | 日期格式 | yyyy-MM-dd |
 
+反序列化：将Date对象转换为json中的字符串格式，如下的payDate属性会被正确赋值为Date对象，值为'2016-01-08'
 
+请求json
 
+``` json
+{
+  "name": "fake_data",
+  "money": 33.16,
+  "payDate": "2016-01-08"
+}
+```
+
+请求入参实体
+
+```java
+public class PayRecordRequestDTO {
+
+    private String name;
+
+    private BigDecimal money;
+
+    @DateFormat(pattern = "yyyy-MM-dd")
+    private Date payDate;
+
+    /** getter setter **/
+}
+```
+
+序列化： 将json中的字符串转为date，必须匹配设置的pattern。如下的payDate会正确的返回当前时间的月和日
+
+响应出参实体
+
+```java
+public class PayRecordRequestDTO {
+
+    private String name;
+
+    private BigDecimal money;
+
+    @DateFormat(pattern = "MM-dd")
+    private Date payDate = new Date();
+
+    /** getter setter **/
+}
+```
+
+​	
