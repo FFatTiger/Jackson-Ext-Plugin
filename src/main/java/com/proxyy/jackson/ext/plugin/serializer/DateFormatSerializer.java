@@ -5,11 +5,9 @@ import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.proxyy.jackson.ext.plugin.annotation.DateFormat;
 import com.proxyy.jackson.ext.plugin.eunm.SerializeType;
 import com.proxyy.jackson.ext.plugin.serializer.base.BaseAbstractJacksonSerializer;
-import com.proxyy.jackson.ext.plugin.serializer.base.JacksonSerializeFilter;
 import com.proxyy.jackson.ext.plugin.util.DateUtil;
 
 import java.io.IOException;
@@ -29,17 +27,7 @@ public class DateFormatSerializer extends BaseAbstractJacksonSerializer<Date> {
     }
 
     public DateFormatSerializer(String pattern, final SerializeType serializeType) {
-        super(new JacksonSerializeFilter() {
-            @Override
-            public boolean shouldSerialize(Object currentBean) {
-                return serializeType.isNeedSerialize();
-            }
-
-            @Override
-            public boolean shouldSerializeWithType(Object currentBean) {
-                return serializeType.isNeedSerializeWithType();
-            }
-        });
+        super(serializeType);
         this.pattern = pattern;
     }
 
@@ -48,14 +36,9 @@ public class DateFormatSerializer extends BaseAbstractJacksonSerializer<Date> {
         gen.writeString(DateUtil.parseDateToStr(value, pattern));
     }
 
-    @Override
-    public void serializeWithTypeInternal(Date value, JsonGenerator gen, SerializerProvider serializerProvider, TypeSerializer typeSer) throws IOException {
-        gen.writeString(DateUtil.parseDateToStr(value, pattern));
-    }
-
 
     @Override
-    public JsonSerializer<?> createContextual(SerializerProvider serializerProvider, BeanProperty beanProperty) throws JsonMappingException {
+    public JsonSerializer<?> getInstance(SerializerProvider serializerProvider, BeanProperty beanProperty) throws JsonMappingException {
         if (beanProperty != null && beanProperty.getType().getRawClass().equals(Date.class)) {
 
             DateFormat dateFormat = beanProperty.getAnnotation(DateFormat.class);

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.proxyy.jackson.ext.plugin.serializer.base.BaseAbstractJacksonSerializer;
 
 import java.io.IOException;
@@ -23,13 +22,9 @@ public class DesensitizationFormatSerializer extends BaseAbstractJacksonSerializ
         // TODO proxyy: 2022/4/13  
     }
 
-    @Override
-    public void serializeWithTypeInternal(String value, JsonGenerator gen, SerializerProvider serializerProvider, TypeSerializer typeSer) throws IOException {
-        // TODO proxyy: 2022/4/13  
-    }
 
     @Override
-    public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
+    public JsonSerializer<?> getInstance(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
         // TODO proxyy: 2022/4/13  
         return null;
     }

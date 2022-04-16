@@ -2,6 +2,8 @@
 
 > 这是一个jackson扩展插件，没有任何技术，只是把平常常用的格式化的功能整合且做了简化，一切并发与安全都依赖jackson本身
 
+[TOC]
+
 ## 1.简介
 
 该项目旨在将对象格式化从业务逻辑中解耦出来。主要是将[Jackson](https://github.com/FasterXML/jackson)
@@ -19,7 +21,7 @@
 
 ### 3.1.注解
 
-### 3.1.1.注解通用属性serializeType
+#### 3.1.1.注解通用属性serializeType
 
 该属性用于指定注解生效场景
 
@@ -34,11 +36,9 @@ SerializeType枚举项
 | ONLY_TYPE_SER | 否       | 是      | 否   |
 |      ALL      | 是       | 是      | 是   |
 
----
+#### 3.1.2.@DateFormat日期格式化
 
-### 3.1.2.DateFormat日期格式化
-
-|         | Desc     | Example    |
+| 参数    | Desc     | Example    |
 | ------- | -------- | ---------- |
 | pattern | 日期格式 | yyyy-MM-dd |
 

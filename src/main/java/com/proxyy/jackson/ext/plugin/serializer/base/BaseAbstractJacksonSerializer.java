@@ -1,10 +1,13 @@
 package com.proxyy.jackson.ext.plugin.serializer.base;
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.BeanProperty;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
+import com.proxyy.jackson.ext.plugin.eunm.SerializeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +34,11 @@ public abstract class BaseAbstractJacksonSerializer<T> extends JsonSerializer<T>
         this.jacksonSerializeFilter = jacksonSerializeFilter;
     }
 
+
+    protected BaseAbstractJacksonSerializer(SerializeType serializeType) {
+        this.jacksonSerializeFilter = JacksonSerializeFilter.Default.create(serializeType);
+    }
+
     @Override
     public final void serialize(T value, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         if (jacksonSerializeFilter == null || jacksonSerializeFilter.shouldSerialize(value)) {
@@ -42,15 +50,12 @@ public abstract class BaseAbstractJacksonSerializer<T> extends JsonSerializer<T>
         Objects.requireNonNull(jacksonInternalSerializer, value.getClass().getSimpleName() + " has no corresponding serializer");
         jacksonInternalSerializer.serialize(value,jsonGenerator, serializerProvider);
     }
-
-    public abstract void serializeInternal(T value, JsonGenerator gen, SerializerProvider serializerProvider) throws IOException;
-
     @Override
     public final void serializeWithType(T value, JsonGenerator gen, SerializerProvider serializerProvider, TypeSerializer typeSer) throws IOException {
         if (jacksonSerializeFilter == null || jacksonSerializeFilter.shouldSerializeWithType(gen.getCurrentValue())) {
             gen.writeStartArray();
             gen.writeString(value.getClass().getName());
-            serializeWithTypeInternal(value, gen, serializerProvider, typeSer);
+            serializeInternal(value, gen, serializerProvider);
             gen.writeEndArray();
             return;
         }
@@ -60,8 +65,38 @@ public abstract class BaseAbstractJacksonSerializer<T> extends JsonSerializer<T>
         jacksonInternalSerializer.serializeWithType(value, gen, serializerProvider, typeSer);
     }
 
-    public abstract void serializeWithTypeInternal(T value, JsonGenerator gen, SerializerProvider serializerProvider, TypeSerializer typeSer) throws IOException;
+    /**
+     * simpleSerialize
+     *
+     * @param value              Value to serialize; can <b>not</b> be null.
+     * @param gen                Generator used to output resulting Json content
+     * @param serializerProvider Provider that can be used to get serializers for
+     *                           serializing Objects value contains, if any.
+     * @throws IOException
+     */
+    public abstract void serializeInternal(T value, JsonGenerator gen, SerializerProvider serializerProvider) throws IOException;
 
 
+    @Override
+    public final JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
+        if (property != null) {
+            return getInstance(prov, property);
+        }
+        return null;
+    }
 
+
+    /**
+     * 与createContextual相同
+     *
+     * @param prov     Serializer provider to use for accessing config, other serializers
+     * @param property Method or field that represents the property
+     *                 (and is used to access value to serialize).
+     *                 Should be available; but there may be cases where caller cannot provide it and
+     *                 null is passed instead (in which case impls usually pass 'this' serializer as is)
+     * @return Serializer to use for serializing values of specified property;
+     * may be this instance or a new instance.
+     * @throws JsonMappingException
+     */
+    public abstract JsonSerializer<?> getInstance(SerializerProvider prov, BeanProperty property) throws JsonMappingException;
 }

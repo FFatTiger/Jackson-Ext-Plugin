@@ -26,6 +26,7 @@ public @interface EnumFormat {
 
     /**
      * 用于映射的枚举类属性名，该属性的值在枚举中一定唯一
+     * 在反序列化时指定
      *
      * @return 格式字符串
      */
@@ -33,6 +34,7 @@ public @interface EnumFormat {
 
     /**
      * 用于展示的枚举类属性名
+     * 在序列化时指定
      *
      * @return
      */
